@@ -1,4 +1,9 @@
 .boxi {
 	background: rgba(0,0,0,0.5);
-	width: 700px;
+	max-width: 700px;
+}
+
+.imgsize {
+	max-width: auto;
+	max-height: 400px;
 }
