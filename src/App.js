@@ -1,25 +1,86 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Clarifai from 'clarifai';
+import Particles from 'react-particles-js';
+import Navigation from './components/Navigation/Navigation';
+import Logo from './components/Logo/Logo';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import Rank from './components/Rank/Rank';
+import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import './App.css';
 
+
+const particlesOptions = {
+    particles: {
+      "number": {
+      "value": 100,
+      "density": {
+        "enable": true,
+        "value_area": 500
+      }
+    },
+     "line_linked": {
+      "enable": true,
+      "distance": 157.82952832645452,
+      "color": "#1e1515",
+      "opacity": 0.5,
+      "width": 1
+    },
+     "color": {
+      "value": "#000000"
+    },
+}
+}
+
+const app = new Clarifai.App({
+ apiKey: '49c9e5fa203941f48a56b1258c524d8c'
+});
+
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      input: '',
+    }
+  }
+
+  onInputChange = (event) => {
+    console.log(event.target.value);
+  }
+
+  onButtonSubmit = () => {
+    console.log('click');
+    app.models.predict("49c9e5fa203941f48a56b1258c524d8c", "https://samples.clarifai.com/face-det.jpg").then(
+      function(response) {
+        console.log(response);
+      },
+      function(err) {
+        // there was an error
+      }
+  );
+  }
+
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <Particles className='particles' params={particlesOptions}/>
+        <nav>
+          <div className="flex justify-between">
+             <div className="fl w-100 w-50-ns pa2">
+              <Logo />
+             </div>
+            <div className="fl w-100 w-50-ns pa2">
+              <Navigation />
+            </div>
+           </div>
+      }
+      </nav>
+      <Rank />
+      <ImageLinkForm 
+       onInputChange={this.onInputChange} 
+       onButtonSubmit={this.onButtonSubmit}
+      />
+      <FaceRecognition />
       </div>
     );
   }
